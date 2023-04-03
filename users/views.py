@@ -1,9 +1,12 @@
 from django.shortcuts import render, redirect
 from .forms import RegistrationForm
-from .models import Account
+from django.contrib.auth import get_user_model
 from django.contrib import messages, auth
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
+
+
+User = get_user_model()
 
 # verification email
 from django.contrib.sites.shortcuts import get_current_site
@@ -26,18 +29,13 @@ def register(request):
             password = form.cleaned_data['password']
             username = form.cleaned_data['username']
 
-            user = Account.objects.create_user(first_name=first_name, last_name=last_name,
+            user = User.objects.create_user(first_name=first_name, last_name=last_name,
             phone_number = phone_number, email=email, username=username, password=password)
-           
-                                                 
-            # Beacuse our accountmanager within the customuser model dont have the phone so we have adjusted the model and its manager accordingly
-            # user.phone_number = phone_number
-            # user.save()
 
             # user activation 
             current_site = get_current_site(request)
             mail_subject = "Please activate your account"
-            message = render_to_string('accounts/account_verification_email.html',{
+            message = render_to_string('users/account_verification_email.html',{
                 'user': user,
                 'domain': current_site,
                 'uid': urlsafe_base64_encode(force_bytes(user.pk)),
@@ -49,7 +47,9 @@ def register(request):
 
 
             # messages.success(request,'We have sent you an activation email, click the link in there to activate this account')
-            return redirect('/accounts/login/?command=verification&email='+email)
+            return redirect('/users/login/?command=verification&email='+email)
+        else:
+            print(form.errors)
            
             
     else:
@@ -59,7 +59,7 @@ def register(request):
     context = {
         'form': form,
     }
-    return render(request, 'accounts/register.html', context)
+    return render(request, 'users/register.html', context)
 
 def login(request):
     if request.method == 'POST':
@@ -74,7 +74,7 @@ def login(request):
         else:
             messages.error(request, 'invalid login credentials')
             return redirect('login')
-    return render(request, 'accounts/login.html')
+    return render(request, 'users/login.html')
 
 
 
@@ -88,19 +88,19 @@ def logout(request):
 
 @login_required(login_url = 'login')
 def dashboard(request):
-    return render(request, 'accounts/dashboard.html')
+    return render(request, 'users/dashboard.html')
 
 
 def forgotPassword(request):
     if request.method == 'POST':
         email = request.POST['email']
-        if Account.objects.filter(email=email).exists():
-            user = Account.objects.get(email__iexact=email)
+        if User.objects.filter(email=email).exists():
+            user = User.objects.get(email__iexact=email)
 
             #reset password email
             current_site = get_current_site(request)
             mail_subject = "Please reset your password"
-            message = render_to_string('accounts/reset_password_email.html',{
+            message = render_to_string('users/reset_password_email.html',{
                 'user': user,
                 'domain': current_site,
                 'uid': urlsafe_base64_encode(force_bytes(user.pk)),
@@ -117,15 +117,15 @@ def forgotPassword(request):
             messages.error(request, 'Account does not exist')
             return redirect('forgotPassword')
 
-    return render(request, 'accounts/forgotPassword.html')
+    return render(request, 'users/forgotPassword.html')
 
 
 
 def activate(request, uidb64, token):
     try:
         uid = urlsafe_base64_decode(uidb64).decode()
-        user = Account._default_manager.get(pk=uid)
-    except(TypeError, ValueError, OverflowError, Account.DoesNotExist):
+        user = User._default_manager.get(pk=uid)
+    except(TypeError, ValueError, OverflowError, User.DoesNotExist):
         user = None
 
     if user is not None and default_token_generator.check_token(user, token):
@@ -141,8 +141,8 @@ def activate(request, uidb64, token):
 def resetpassword_validate(request, uidb64, token):
     try:
         uid = urlsafe_base64_decode(uidb64).decode()
-        user = Account._default_manager.get(pk=uid)
-    except(TypeError, ValueError, OverflowError, Account.DoesNotExist):
+        user = user._default_manager.get(pk=uid)
+    except(TypeError, ValueError, OverflowError, user.DoesNotExist):
         user = None
     if user is not None and default_token_generator.check_token(user, token):
         request.session['uid'] = uid
@@ -160,7 +160,7 @@ def resetPassword(request):
 
         if password == confirm_password:
             uid = request.session.get('uid')
-            user = Account.objects.get(pk=uid)
+            user = User.objects.get(pk=uid)
             user.set_password(password)
             user.save()
             messages.success(request,'Password reset successful')
@@ -170,4 +170,4 @@ def resetPassword(request):
             messages.error(request,'Password do not match')
             return redirect('resetPassword')
     else:
-        return render(request, 'accounts/resetPassword.html')
+        return render(request, 'users/resetPassword.html')
