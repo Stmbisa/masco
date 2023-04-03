@@ -1,85 +1,71 @@
 {% extends "base.html" %}
 {% load static %}
+
 {% block content %}
 <div class="container-fluid page-header mb-5">
   <div class="d-flex flex-column align-items-center justify-content-center pt-0 pt-lg-5" style="min-height: 400px">
-    <h4 class="display-4 mb-3 mt-0 mt-lg-5 text-white text-uppercase font-weight-bold">Register Now</h4>
+    <h4 class="display-4 mb-3 mt-0 mt-lg-5 text-white text-uppercase font-weight-bold">Login Now</h4>
   </div>
-
 </div>
-<!-- {{ form.errors }} -->
+
 <div class="d-flex justify-content-center align-items-center">
   <div class="container">
     <div class="row">
-      <div class="card mx-auto" style="max-width:520px; margin-top:40px;">
+      {% if form.errors %}
+      <div class="card mx-auto" style="max-width:800px; margin-top:40px;">
         <article class="card-body">
           <div class="alert alert-danger">
-
             {{ form.errors }}
           </div>
+        </article>
       </div>
+      {% endif %}
     </div>
   </div>
 </div>
+
 <div class="d-flex justify-content-center align-items-center">
   <div class="container">
     <div class="row">
       <div class="card mx-auto" style="max-width:520px; margin-top:40px;">
         <article class="card-body">
           <section class="section-conten padding-y" style="min-height:84vh">
-
-            <!-- ============================ COMPONENT LOGIN   ================================= -->
-
             {% if request.GET.command == 'verification' %}
-
-            <div class="container mx-auto alert alert-info text-center" role="alert"
-              style="max-width: 1024px; margin-top:100px;">
+            <div class="container mx-auto alert alert-info text-center" role="alert" style="max-width: 1024px; margin-top:100px;">
               Thank you for registering with us. We have sent you a verification email to your email address [{{
               request.GET.email }}]
               <br><br>
               Already verified? <a href="{% url 'login' %}">Login</a>
             </div>
             {% else %}
-            <div class="card mx-auto" style="max-width: 380px; margin-top:100px;">
+            <div class="card mx-auto" style="max-width: 520px; margin-top:100px;">
               <div class="card-body">
-
                 <h4 class="card-title mb-4">Sign in</h4>
                 {% include 'core/includes/alerts.html' %}
                 <form action="{% url 'login' %}" method="POST">
                   {% csrf_token %}
                   <div class="form-group">
                     <input type="email" class="form-control" placeholder="Email Address" name="email">
-                  </div> <!-- form-group// -->
+                  </div>
                   <div class="form-group">
                     <input type="password" class="form-control" placeholder="Password" name="password">
-                  </div> <!-- form-group// -->
-
+                  </div>
                   <div class="form-group">
                     <a href="#" class="float-right">Forgot password?</a>
-
-                  </div> <!-- form-group form-check .// -->
+                  </div>
                   <div class="form-group">
                     <button type="submit" class="btn btn-primary btn-block"> Login </button>
-                  </div> <!-- form-group// -->
+                  </div>
                 </form>
-              </div> <!-- card-body.// -->
-            </div> <!-- card .// -->
-
+              </div>
+            </div>
             <p class="text-center mt-4">Don't have account? <a href="{% url 'register' %}">Sign up</a></p>
-            <br><br>
-            <!-- ============================ COMPONENT LOGIN  END.// ================================= -->
             {% endif %}
-
-
           </section>
+        </article>
       </div>
     </div>
   </div>
-</div>
-
-</div>
-</div>
-</div>
 </div>
 
 {% endblock %}

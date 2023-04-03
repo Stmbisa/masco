@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.contrib.auth.models import User
-from .forms import BMICalculatorForm, TestimonialForm, SubscriptionForm
+from .forms import BMICalculatorForm, TestimonialForm, SubscriptionForm, MembershipForm
 
 def index(request):
     bmi_form = BMICalculatorForm()
@@ -31,3 +31,11 @@ def index(request):
                 return render(request, 'core/index.html', {'bmi_form': BMICalculatorForm(), 'testimonial_form': TestimonialForm(), 'subscription_form': SubscriptionForm()})
 
     return render(request, 'core/index.html', {'bmi_form': bmi_form, 'testimonial_form': testimonial_form, 'subscription_form': subscription_form})
+
+
+def membership_view(request):
+    form = MembershipForm(request.POST or None)
+    if form.is_valid():
+        form.save()
+        return redirect('membership_success')
+    return render(request, 'membership_form.html', {'form': form})
