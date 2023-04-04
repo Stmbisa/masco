@@ -14,7 +14,7 @@ from django.utils import timezone
 
 
 
-class UserManager(BaseUserManager):
+class UserManager(BaseUserManager, PermissionsMixin):
     """ minimum fields for all users"""
     def create_user(
             self,

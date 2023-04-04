@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from .forms import BMICalculatorForm, TestimonialForm, SubscriptionForm, MembershipForm
 from django.shortcuts import render
