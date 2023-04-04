@@ -1,7 +1,5 @@
 from django import forms
-from .models import BMI
-from .models import Subscription
-from .models import Membership, Testimonial
+from .models import Subscription, Membership, Testimonial, BMI
 
 
 class BMICalculatorForm(forms.ModelForm):

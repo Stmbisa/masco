@@ -1,2 +1,16 @@
 django>=4.1.0, <4.2.0
 redis
+
+
+
+Based on the models you provided, it looks like the issue might be with the Booking model. Specifically, the user and membership fields are foreign keys to the User and Membership models, respectively. However, you are trying to create a Booking object by passing in user_id and membership_id values instead of User and Membership objects.
+
+To fix this, you should pass in the actual User and Membership objects as arguments to the Booking constructor, like this:
+
+python
+Copy code
+user = User.objects.get(id=user_id)
+membership = Membership.objects.get(id=membership_id)
+booking = Booking(user=user, membership=membership, session_date=session_date, session_type=session_type)
+booking.save()
+This assumes that user_id and membership_id are integers representing the
