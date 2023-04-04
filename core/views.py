@@ -1,6 +1,9 @@
 from django.shortcuts import render
 from django.contrib.auth.models import User
 from .forms import BMICalculatorForm, TestimonialForm, SubscriptionForm, MembershipForm
+from django.shortcuts import render
+from django.utils import timezone
+from .models import User
 
 def index(request):
     bmi_form = BMICalculatorForm()
@@ -39,3 +42,13 @@ def membership_view(request):
         form.save()
         return redirect('membership_success')
     return render(request, 'membership_form.html', {'form': form})
+
+
+def send_expiry_reminder_emails(request):
+    # Get all users whose membership is about to expire
+    users_to_remind = User.objects.filter(
+        membership_end_date=timezone.now().date() + timezone.timedelta(days=2)
+    )
+    for user in users_to_remind:
+        user.send_membership_expiry_email()
+    return render(request, 'expiry_reminder_sent.html')

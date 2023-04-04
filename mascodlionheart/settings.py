@@ -11,6 +11,9 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
 from pathlib import Path
+import os 
+import datetime
+from datetime import timezone
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -148,3 +151,29 @@ EMAIL_USE_TLS = True
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Celery settings
+CELERY_BROKER_URL = 'redis://redis-host:6379/0'
+CELERY_RESULT_BACKEND = 'redis://redis-host:6379/1'
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'UTC'
+# CELERY_TASK_ALWAYS_EAGER = True # for production
+
+# replace redis_cache, password, redis_server, and port with the appropriate values find the Redis credentials and connection details for your account in the PythonAnywhere dashboard under the "Databases" tab.
+
+# Celery periodic tasks
+CELERY_BEAT_SCHEDULE = {
+    'send_expiry_reminder_emails_daily': {
+        'task': 'core.tasks.send_expiry_reminder_emails_daily',
+        'schedule': timezone.timedelta(days=1),  # run daily
+    },
+}
+
+
+# Django models for gym for celery settings
+# Celery worker and beat in your PythonAnywhere console command to start the task:
+# celery -A mascodlionheart worker -l info
+# celery -A mascodlionheart beat -l info
+

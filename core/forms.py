@@ -1,7 +1,7 @@
 from django import forms
 from .models import BMI
 from .models import Subscription
-from .models import Membership
+from .models import Membership, Testimonial
 
 
 class BMICalculatorForm(forms.ModelForm):
@@ -28,3 +28,21 @@ class MembershipForm(forms.ModelForm):
             self.fields['duration'].widget.attrs['readonly'] = True
         elif not self.instance.user.is_superuser:
             self.fields['duration'].widget.attrs['readonly'] = True
+
+
+class TestimonialForm(forms.ModelForm):
+    class Meta:
+        model = Testimonial
+        fields = ['text']
+
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop('user')
+        super().__init__(*args, **kwargs)
+
+    def save(self, commit=True):
+        instance = super().save(commit=False)
+        instance.user = self.user
+        if commit:
+            instance.save()
+        return instance
+

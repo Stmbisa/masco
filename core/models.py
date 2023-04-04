@@ -44,11 +44,23 @@ class Membership(models.Model):
         ('private', 'Private'),
         ('monthly', 'Monthly'),
     )
-
+    user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True)
     type = models.CharField(max_length=10, choices=MEMBERSHIP_TYPES, default='private')
     description = models.TextField()
     price = models.DecimalField(max_digits=8, decimal_places=2)
-    duration = models.IntegerField(default=30, editable=False)
+    duration = models.IntegerField(default=30,)
+    has_paid = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=False)
+
+class Testimonial(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    profession = models.CharField(max_length=100)
+    text = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.user.username}'s testimonial"
+    
 
 
 

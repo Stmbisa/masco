@@ -8,6 +8,11 @@ from django.contrib.auth.models import(
     BaseUserManager,
     PermissionsMixin,
 )
+from django.core.mail import send_mail
+from django.template.loader import render_to_string
+from django.utils import timezone
+
+
 
 class UserManager(BaseUserManager):
     """ minimum fields for all users"""
@@ -90,6 +95,20 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username', 'first_name', 'last_name', 'telephone']
+
+    def is_membership_active(self):
+        """Check if user's membership is currently active."""
+        today = timezone.now().date()
+        return self.membership_start_date <= today <= self.membership_end_date
+
+    def send_membership_expiry_email(self):
+        """Send an email to the user if their membership is about to expire."""
+        days_until_expiry = (self.membership_end_date - timezone.now().date()).days
+        if days_until_expiry == 2:
+            subject = "Your gym membership is about to expire"
+            message = render_to_string('membership_expiry_email.html', {'user': self})
+            send_mail(subject, message, 'gym@example.com', [self.email])
+    
 
 
 
