@@ -24,13 +24,13 @@ def register(request):
         if form.is_valid():
             first_name = form.cleaned_data['first_name']
             last_name = form.cleaned_data['last_name']
-            phone_number = form.cleaned_data['phone_number']
+            telephone = form.cleaned_data['telephone']
             email = form.cleaned_data['email']
             password = form.cleaned_data['password']
             username = form.cleaned_data['username']
 
             user = User.objects.create_user(first_name=first_name, last_name=last_name,
-            phone_number = phone_number, email=email, username=username, password=password)
+            telephone = telephone, email=email, username=username, password=password)
 
             # user activation 
             current_site = get_current_site(request)
