@@ -13,12 +13,12 @@ class RegistrationForm(forms.ModelForm):
         'placeholder': 'Confirm password',}))
     class Meta:
         model = User
-        fields = ('first_name','last_name','telephone', 'email', 'password')
+        fields = ('first_name','last_name','telephone', 'email','username', 'password', 'confirm_password')
         
     def clean(self):
         cleaned_data = super(RegistrationForm, self).clean()
         password = cleaned_data.get('password')
-        confirmPassword = cleaned_data.get('confirmPassword')
+        confirmPassword = cleaned_data.get('confirm_password')
 
         if password != confirmPassword:
             raise forms.ValidationError(

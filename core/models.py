@@ -52,6 +52,16 @@ class Booking(models.Model):
         else:
             return False
         
+    def is_available(self):
+        """Check if session time is available and the day is not sold out."""
+        session_time = self.session_date.time()
+        bookings_on_day = Booking.objects.filter(session_date=self.session_date, session_type=self.session_type)
+        if bookings_on_day.count() >= 6:
+            return False  # Day is sold out
+        if bookings_on_day.filter(session_date__time=session_time).exists():
+            return False  # Session time is booked
+        return True
+        
 
 
 

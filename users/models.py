@@ -103,11 +103,14 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def send_membership_expiry_email(self):
         """Send an email to the user if their membership is about to expire."""
-        days_until_expiry = (self.membership_end_date - timezone.now().date()).days
+        days_until_expiry = (self.booking_set.filter(membership__membership_end_date__gte=timezone.now().date())
+                            .earliest('membership__membership_end_date')
+                            .membership_end_date - timezone.now().date()).days
         if days_until_expiry == 2:
             subject = "Your gym membership is about to expire"
             message = render_to_string('membership_expiry_email.html', {'user': self})
             send_mail(subject, message, 'gym@example.com', [self.email])
+
     
 
 

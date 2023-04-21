@@ -34,7 +34,7 @@ class TestimonialForm(forms.ModelForm):
         fields = ['text']
 
     def __init__(self, *args, **kwargs):
-        self.user = kwargs.pop('user')
+        self.user = kwargs.pop('user', None)
         super().__init__(*args, **kwargs)
 
     def save(self, commit=True):

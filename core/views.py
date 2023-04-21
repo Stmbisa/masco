@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from .forms import BMICalculatorForm, TestimonialForm, SubscriptionForm, MembershipForm
 from django.shortcuts import render
 from django.utils import timezone
-from .models import User
+from .models import User, BMI, Testimonial
 
 def index(request):
     bmi_form = BMICalculatorForm()
@@ -14,10 +14,13 @@ def index(request):
         if 'bmi_form' in request.POST:
             bmi_form = BMICalculatorForm(request.POST)
             if bmi_form.is_valid():
-                bmi_instance = bmi_form.save(commit=False)
-                bmi_instance.bmi_result = bmi_instance.calculate_bmi()
+                name = bmi_form.cleaned_data['name']
+                age = bmi_form.cleaned_data['age']
+                height = bmi_form.cleaned_data['height']
+                bmi_instance = BMI.objects.create_user(name=name, age=age,height = height)
+                bmi_instance = bmi_instance.calculate_bmi()
                 bmi_instance.save()
-                return render(request, 'core/index.html', {'bmi_form': BMICalculatorForm(), 'testimonial_form': TestimonialForm(), 'subscription_form': SubscriptionForm(), 'bmi_result': bmi_instance.bmi_result})
+                return render(request, 'core/index.html', {'bmi_form': BMICalculatorForm(), 'testimonial_form': TestimonialForm(), 'subscription_form': SubscriptionForm(), 'bmi_result': bmi_instance})
 
         if 'testimonial_form' in request.POST:
             testimonial_form = TestimonialForm(request.POST)
