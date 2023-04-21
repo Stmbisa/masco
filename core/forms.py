@@ -3,9 +3,21 @@ from .models import Subscription, Membership, Testimonial, BMI
 
 
 class BMICalculatorForm(forms.ModelForm):
+    GENDER_CHOICES = [
+        ('M', 'Male'),
+        ('F', 'Female'),
+    ]
+    gender = forms.ChoiceField(choices=GENDER_CHOICES, widget=forms.Select(attrs={'class': 'custom-select custom-select-lg bg-dark text-muted', 'placeholder': 'Gender'}))
     class Meta:
         model = BMI
-        fields = ['name', 'age', 'height', 'weight']
+        fields = ['name', 'age', 'height', 'weight','gender', ]
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control form-control-lg bg-dark text-white', 'placeholder': 'Name'}),
+            'age': forms.TextInput(attrs={'class': 'form-control form-control-lg bg-dark text-white', 'placeholder': 'Age'}),
+            'height': forms.TextInput(attrs={'class': 'form-control form-control-lg bg-dark text-white', 'placeholder': 'Height (CM)'}),
+            'weight': forms.TextInput(attrs={'class': 'form-control form-control-lg bg-dark text-white', 'placeholder': 'Weight (KG)'}),
+        }
+
 
 
 class SubscriptionForm(forms.ModelForm):

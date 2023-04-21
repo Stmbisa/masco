@@ -171,3 +171,8 @@ def resetPassword(request):
             return redirect('resetPassword')
     else:
         return render(request, 'users/resetPassword.html')
+    
+
+
+def book(request):
+    return render(request, 'book.html')

@@ -22,13 +22,13 @@ def index(request):
                 bmi_instance.save()
                 return render(request, 'core/index.html', {'bmi_form': BMICalculatorForm(), 'testimonial_form': TestimonialForm(), 'subscription_form': SubscriptionForm(), 'bmi_result': bmi_instance})
 
-        if 'testimonial_form' in request.POST:
-            testimonial_form = TestimonialForm(request.POST)
-            if testimonial_form.is_valid():
-                testimonial_instance = testimonial_form.save(commit=False)
-                testimonial_instance.user = request.user
-                testimonial_instance.save()
-                return render(request, 'core/index.html', {'bmi_form': BMICalculatorForm(), 'testimonial_form': TestimonialForm(), 'subscription_form': SubscriptionForm()})
+        # if 'testimonial_form' in request.POST:
+        #     testimonial_form = TestimonialForm(request.POST)
+        #     if testimonial_form.is_valid():
+        #         testimonial_instance = testimonial_form.save(commit=False)
+        #         testimonial_instance.user = request.user
+        #         testimonial_instance.save()
+        #         return render(request, 'core/index.html', {'bmi_form': BMICalculatorForm(), 'testimonial_form': TestimonialForm(), 'subscription_form': SubscriptionForm()})
 
         if 'subscription_form' in request.POST:
             subscription_form = SubscriptionForm(request.POST)
@@ -55,3 +55,5 @@ def send_expiry_reminder_emails(request):
     for user in users_to_remind:
         user.send_membership_expiry_email()
     return render(request, 'expiry_reminder_sent.html')
+
+
