@@ -3,7 +3,9 @@ from django.contrib.auth.models import User
 from .forms import BMICalculatorForm, TestimonialForm, SubscriptionForm, MembershipForm
 from django.shortcuts import render
 from django.utils import timezone
-from .models import User, BMI, Testimonial
+from .models import BMI, Testimonial, Contact
+from django.contrib import messages
+
 
 def index(request):
     bmi_form = BMICalculatorForm()
@@ -57,3 +59,16 @@ def send_expiry_reminder_emails(request):
     return render(request, 'expiry_reminder_sent.html')
 
 
+
+def contact(request):
+    if request.method=="POST":
+        name=request.POST.get('fullname')
+        email=request.POST.get('email')
+        number=request.POST.get('phone')
+        subject=request.POST.get('subject')
+        message=request.POST.get('message')
+        myquery=Contact(name=name,email=email,phonenumber=number,subject=subject, message=message)
+        myquery.save()       
+        messages.info(request,"Thanks for Contacting us we will get back you soon")
+        return redirect('/contact')
+    return render(request, 'core/contact.html')

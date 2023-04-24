@@ -91,9 +91,10 @@ class Blog(models.Model):
     
 class Contact(models.Model):
     name=models.CharField(max_length=25)
-    email=models.EmailField()
-    phonenumber=models.CharField(max_length=12)
-    description=models.TextField()
+    email=models.EmailField(blank=False, null=False)
+    phonenumber=models.CharField(max_length=12, blank=False, null=False)
+    subject=models.TextField(max_length=100, blank=True)
+    message=models.TextField()
 
     def __str__(self):
         return self.email
