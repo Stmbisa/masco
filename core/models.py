@@ -70,6 +70,7 @@ class Testimonial(models.Model):
     profession = models.CharField(max_length=100)
     text = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
+    is_approved = models.BooleanField()
 
     def __str__(self):
         return f"{self.user.username}'s testimonial"

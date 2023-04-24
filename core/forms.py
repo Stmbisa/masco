@@ -1,5 +1,5 @@
 from django import forms
-from .models import Subscription, Membership, Testimonial, BMI
+from .models import Subscription, Membership, Testimonial, BMI, Contact
 
 
 class BMICalculatorForm(forms.ModelForm):
@@ -17,6 +17,17 @@ class BMICalculatorForm(forms.ModelForm):
             'height': forms.TextInput(attrs={'class': 'form-control form-control-lg bg-dark text-white', 'placeholder': 'Height (CM)'}),
             'weight': forms.TextInput(attrs={'class': 'form-control form-control-lg bg-dark text-white', 'placeholder': 'Weight (KG)'}),
         }
+        def __init__(self, *args, **kwargs):
+            user = kwargs.pop('user', None)
+            super().__init__(*args, **kwargs)
+            if user and user.is_authenticated:
+                self.fields['name'].widget = forms.HiddenInput()
+                self.fields['email'].widget = forms.HiddenInput()
+                self.fields['telephone'].widget = forms.HiddenInput()
+                self.fields['message'].widget.attrs['placeholder'] = 'Type your message here...'
+                self.initial['name'] = user.get_full_name()
+                self.initial['email'] = user.email
+                self.initial['telephone'] = user.telephone
 
 
 
@@ -55,4 +66,18 @@ class TestimonialForm(forms.ModelForm):
         if commit:
             instance.save()
         return instance
+    
+
+
+class ContactForm(forms.ModelForm):
+    class Meta:
+        model = Contact
+        fields = ('name', 'email', 'subject', 'message')
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Name'}),
+            'email': forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Email'}),
+            'subject': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Subject'}),
+            'message': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Message', 'rows': 5}),
+        }
+
 

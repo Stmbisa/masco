@@ -112,7 +112,7 @@ class User(AbstractBaseUser, PermissionsMixin):
             send_mail(subject, message, 'gym@example.com', [self.email])
 
     def __str__(self):
-        return self.name
+        return self.first_name + " " + self.last_name
 
 
 class Trainer(models.Model):
