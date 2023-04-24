@@ -111,6 +111,20 @@ class User(AbstractBaseUser, PermissionsMixin):
             message = render_to_string('membership_expiry_email.html', {'user': self})
             send_mail(subject, message, 'gym@example.com', [self.email])
 
+    def __str__(self):
+        return self.name
+
+
+class Trainer(models.Model):
+    account = models.ForeignKey(User, on_delete=models.CASCADE, blank=True)
+    name=models.CharField(max_length=55)
+    gender=models.CharField(max_length=25)
+    phone=models.CharField(max_length=25)
+    salary=models.IntegerField()
+    timeStamp=models.DateTimeField(auto_now_add=True,blank=True)
+    def __str__(self):
+        return self.first_name + " " + self.last_name
+
     
 
 
