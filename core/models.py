@@ -35,7 +35,22 @@ class Membership(models.Model):
     duration = models.IntegerField(default=30,)
     has_paid = models.BooleanField(default=False)
     is_active = models.BooleanField(default=False)
-    
+
+    def is_membership_active(self):
+        """Check if the membership is active since the day they signed up for it."""
+        if self.is_active:
+            today = timezone.now().date()
+            days_since_signup = (today - self.created_date).days
+            if days_since_signup <= self.duration:
+                return True
+            else:
+                return False
+        else:
+            return False
+
+    def is_membership_paid(self):
+        """Check if the membership is paid for."""
+        return self.has_paid
 
 class Booking(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)

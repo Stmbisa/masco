@@ -2,6 +2,8 @@ from django import forms
 from .models import Subscription, Membership, Testimonial, BMI, Contact, Booking
 from django.forms import SelectDateWidget
 from datetime import datetime, time
+from django.forms import widgets
+from .models import Booking
 
 
 class BMICalculatorForm(forms.ModelForm):
@@ -83,26 +85,31 @@ class ContactForm(forms.ModelForm):
         }
 
 
+
 class BookingForm(forms.ModelForm):
+    session_start_time = forms.TimeField(
+        widget=forms.TimeInput(
+            attrs={'class': 'form-control form-control-lg bg-dark text-white', 'placeholder': 'Start Time'},
+            format='%I:%M %p',
+            attrs={'class': 'form-control timepicker'}
+        ),
+    )
+    session_end_time = forms.TimeField(
+        widget=forms.TimeInput(
+            attrs={'class': 'form-control form-control-lg bg-dark text-white', 'placeholder': 'End Time'},
+            format='%I:%M %p',
+            attrs={'class': 'form-control timepicker'}
+        ),
+    )
+
     class Meta:
         model = Booking
-        fields = ['session_date', 'session_time', 'session_type']
-
-        # Set Bootstrap classes and placeholder text for each field
+        fields = ['membership', 'session_date', 'session_start_time', 'session_end_time', 'session_type']
         widgets = {
-            'session_date': SelectDateWidget(attrs={'class': 'form-control form-control-lg bg-dark text-white', 'placeholder': 'Select Date'}),
-            'session_time': forms.TimeInput(attrs={'class': 'form-control form-control-lg bg-dark text-white', 'placeholder': 'Select Time', 'type': 'time'}),
-            'session_type': forms.Select(attrs={'class': 'form-control form-control-lg bg-dark text-white', 'placeholder': 'Select Session Type'})
+            'membership': forms.Select(attrs={'class': 'form-control form-control-lg bg-dark text-white'}),
+            'session_date': forms.DateInput(attrs={'class': 'form-control form-control-lg bg-dark text-white datepicker', 'placeholder': 'Select date'}),
+            'session_type': forms.Select(attrs={'class': 'form-control form-control-lg bg-dark text-white'}),
         }
 
-    def clean(self):
-        cleaned_data = super().clean()
-        session_date = cleaned_data.get('session_date')
-        session_time = cleaned_data.get('session_time')
-        session_type = cleaned_data.get('session_type')
-
-        # Check if booking is available
-        if not Booking.objects.filter(session_date=session_date, session_time=session_time, session_type=session_type).is_available():
-            raise forms.ValidationError('This session is not available. Please choose another time.')
 
 
