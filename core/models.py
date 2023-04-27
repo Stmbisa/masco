@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth import get_user_model
-import django
+from datetime import datetime, time, timedelta
+from django.utils import timezone
 
 
 
@@ -40,7 +41,8 @@ class Booking(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     membership = models.ForeignKey(Membership, on_delete=models.CASCADE)
     session_date = models.DateField()
-    session_time = models.DateField()
+    session_start_time = models.TimeField(default=timezone.now)
+    session_end_time = models.TimeField(default=timezone.now)
     SSESSION_TYPES = (
         ('private', 'Private'),
         ('gym', 'gym'),
@@ -57,15 +59,42 @@ class Booking(models.Model):
         else:
             return False
         
+    def get_booked_hours(self):
+        # get all bookings for the same session date and session type
+        bookings = Booking.objects.filter(session_date=self.session_date, session_type=self.session_type)
+
+        # create a set to store booked hours
+        booked_hours = set()
+
+        # iterate through each booking and add the booked hours to the set
+        for booking in bookings:
+            start_time = booking.session_start_time
+            end_time = booking.session_end_time
+            hours_range = range(start_time.hour, end_time.hour + 1)
+            booked_hours.update(hours_range)
+
+        # return the set of booked hours
+        return booked_hours
+        
     def is_available(self):
         """Check if session time is available and the day is not sold out."""
-        session_time = self.session_date.time()
+        start_time = datetime.combine(self.session_date, self.session_start_time)
+        end_time = datetime.combine(self.session_date, self.session_end_time)
         bookings_on_day = Booking.objects.filter(session_date=self.session_date, session_type=self.session_type)
+        
+        # Check if day is sold out
         if bookings_on_day.count() >= 6:
-            return False  # Day is sold out
-        if bookings_on_day.filter(session_date__time=session_time).exists():
-            return False  # Session time is booked
+            return False
+        
+        # Check for overlapping bookings
+        for booking in bookings_on_day:
+            booking_start_time = datetime.combine(booking.session_date, booking.session_start_time)
+            booking_end_time = datetime.combine(booking.session_date, booking.session_end_time)
+            if (start_time < booking_end_time) and (end_time > booking_start_time):
+                return False
+        
         return True
+
         
 
 

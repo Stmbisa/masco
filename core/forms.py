@@ -1,5 +1,7 @@
 from django import forms
-from .models import Subscription, Membership, Testimonial, BMI, Contact
+from .models import Subscription, Membership, Testimonial, BMI, Contact, Booking
+from django.forms import SelectDateWidget
+from datetime import datetime, time
 
 
 class BMICalculatorForm(forms.ModelForm):
@@ -79,5 +81,28 @@ class ContactForm(forms.ModelForm):
             'subject': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Subject'}),
             'message': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Message', 'rows': 5}),
         }
+
+
+class BookingForm(forms.ModelForm):
+    class Meta:
+        model = Booking
+        fields = ['session_date', 'session_time', 'session_type']
+
+        # Set Bootstrap classes and placeholder text for each field
+        widgets = {
+            'session_date': SelectDateWidget(attrs={'class': 'form-control form-control-lg bg-dark text-white', 'placeholder': 'Select Date'}),
+            'session_time': forms.TimeInput(attrs={'class': 'form-control form-control-lg bg-dark text-white', 'placeholder': 'Select Time', 'type': 'time'}),
+            'session_type': forms.Select(attrs={'class': 'form-control form-control-lg bg-dark text-white', 'placeholder': 'Select Session Type'})
+        }
+
+    def clean(self):
+        cleaned_data = super().clean()
+        session_date = cleaned_data.get('session_date')
+        session_time = cleaned_data.get('session_time')
+        session_type = cleaned_data.get('session_type')
+
+        # Check if booking is available
+        if not Booking.objects.filter(session_date=session_date, session_time=session_time, session_type=session_type).is_available():
+            raise forms.ValidationError('This session is not available. Please choose another time.')
 
 
