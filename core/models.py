@@ -40,7 +40,12 @@ class Booking(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     membership = models.ForeignKey(Membership, on_delete=models.CASCADE)
     session_date = models.DateField()
-    session_type = models.CharField(max_length=50) # type of session (e.g. private training session, class session, etc.)
+    session_time = models.DateField()
+    SSESSION_TYPES = (
+        ('private', 'Private'),
+        ('gym', 'gym'),
+    )
+    session_type = models.CharField(max_length=10, choices=SSESSION_TYPES, default='gym') # type of session (e.g. private training session, class session, etc.)
 
     def __str__(self):
         return f"{self.user.first_name} booked a {self.session_type} session on {self.session_date}"

@@ -17,11 +17,12 @@
                     <a href="class.html" class="nav-item nav-link">Classes</a>
                     {% if user.is_authenticated %}
                     <div class="nav-item dropdown">
-                        <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Membership</a>
+                        <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">{{ user.username }}</a>
                         <div class="dropdown-menu text-capitalize">
                             <a href="blog.html" class="dropdown-item">View Profile</a>
                             <a href="single.html" class="dropdown-item">workouts</a>
                             <a href="single.html" class="dropdown-item">Tracker</a>
+                            <a href="{% url 'logout' %}" class="dropdown-item">log out</a>
                         </div>
                     </div>
                     {% else %}

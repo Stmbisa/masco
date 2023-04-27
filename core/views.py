@@ -72,3 +72,6 @@ def contact(request):
     context = {'form': form}
     return render(request, 'core/contact.html', context)
 
+
+def admin_dashboard(request):
+    return render(request, 'core/admin_dashboard.html')

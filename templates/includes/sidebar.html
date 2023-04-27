@@ -1,0 +1,71 @@
+{% load static %}
+<div class="sidebar" id="sidebar">
+    <div class="sidebar-inner slimscroll">
+       <div id="sidebar-menu" class="sidebar-menu">
+          <ul>
+             <li class="menu-title">
+                <span>Main Menu</span>
+             </li>
+
+             <li class="submenu">
+               <a href=""><i class="bi-file-spreadsheet-fill" style="color: #d6ff22"></i> <span> Dashboard</span> <span class="menu-arrow"></span></a>
+               <ul>
+                  <li><a href=">Main </a></li>
+                  <li><a href="">Manage all registered users </a></li>
+                  <li><a href="">add users </a></li>
+                  <li><a href="">Manage all User profiles </a></li>
+                  <li><a href="">add profiles</a></li>
+                  {% comment %} <li><a href="">see paid profiles</a></li>
+                  <li><a href="">see non-paid profiles</a></li> {% url 'blog:warning' %}{% endcomment %}
+               </ul>
+            </li>
+            <li class="submenu">
+               <a href=""><i class="bi-file-person" style="color: blue;"></i> <span> Profile identities</span> <span class="menu-arrow"></span></a>
+               <ul>
+                  <li><a href="">Manage all profile identities </a></li>
+               </ul>
+            </li>
+            <li class="submenu">
+               <a href=""><i class="bi-arrow-left-right" style="color: #3fcdc7;"></i><span> Profile payments</span> <span class="menu-arrow"></span></a>
+               <ul>
+                  <li><a href="">Manage all profile payments </a></li>
+                  <li><a href="">add payments </a></li>
+               </ul>
+            </li>
+            <li class="submenu">
+               <a href=""><i class="bi-folder-plus" style="color: red"></i><span> Profile documents</span> <span class="menu-arrow"></span></a>
+               <ul>
+                  <li><a href="">Manage all profile documents </a></li>
+                  <li><a href="">add documents </a></li>
+               </ul>
+            </li>
+            <li class="submenu">
+               <a href=""><i class="bi bi-check-circle-fill"  style="color: yellow"></i><span> Admin side verifications</span> <span class="menu-arrow"></span></a>
+               <ul>
+                  <li><a href="">Manage verifications</a></li>
+               </ul>
+            </li>
+            <li class="submenu ">
+               <a href="#"><i class="bi-calendar-date-fill"style="color: #ff689b;"></i> <span> profile dates and Appointements </span> <span class="menu-arrow"></span></a>
+               <ul>
+                 <a href=""><i class="fas fa-holly-berry"></i> <span>Manage dates </span></a>
+                 <a href=""><i class="fas fa-holly-berry"></i> <span>add dates </span></a>
+               </ul>
+            </li>
+            <li class="submenu ">
+               <a href=""><i class="bi bi-files" style="color: #40E0D0;" ></i> <span> Files Submitted </span> <span class="menu-arrow"></span></a>
+               <ul>
+                 <a href=""><i class="bi bi-files"></i> <span>See files </span></a>
+               </ul>
+            </li>
+             <li class="submenu">
+                <a href=""><i class="bi-cash-coin" style="color: #41cf2e;"></i> <span> Cash memo</span> <span class="menu-arrow"></span></a>
+                <ul>
+                   <li><a href="">cash memo List</a></li>
+                   <li><a href="{% url 'dashboard:cashmemo_create' %}">cash memo Add</a></li>
+                </ul>
+             </li>
+            <li><a href="{% url 'accounts:logout' %}"><i class="fa fa-sign-out-alt"></i> <span>Log out </span></a></li>   
+       </div>
+    </div>
+ </div>

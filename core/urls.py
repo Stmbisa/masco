@@ -6,4 +6,5 @@ urlpatterns = [
     path ('contact/', views.contact, name='contact'),
     # # path ('warning/', views.warning, name='warning'),
     # path ('blogs/', views.blog, name='blog'),
+    path ('admin_dashboard/', views.admin_dashboard, name='admin_dashboard'),
 ]
