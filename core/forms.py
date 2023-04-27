@@ -89,16 +89,16 @@ class ContactForm(forms.ModelForm):
 class BookingForm(forms.ModelForm):
     session_start_time = forms.TimeField(
         widget=forms.TimeInput(
-            attrs={'class': 'form-control form-control-lg bg-dark text-white', 'placeholder': 'Start Time'},
+            attrs={'class': 'form-control form-control-lg bg-dark text-white timepicker', 'placeholder': 'Start Time'},
             format='%I:%M %p',
-            attrs={'class': 'form-control timepicker'}
+            # attrs={'class': 'form-control timepicker'}
         ),
     )
     session_end_time = forms.TimeField(
         widget=forms.TimeInput(
-            attrs={'class': 'form-control form-control-lg bg-dark text-white', 'placeholder': 'End Time'},
+            attrs={'class': 'form-control form-control-lg bg-dark text-white timepicker', 'placeholder': 'End Time'},
             format='%I:%M %p',
-            attrs={'class': 'form-control timepicker'}
+            # attrs={'class': 'form-control timepicker'}
         ),
     )
 

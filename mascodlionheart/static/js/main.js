@@ -18,6 +18,18 @@
         $(window).resize(toggleNavbarMethod);
     });
     
+    // Smooth scrolling to sections on the same page
+    $(document).ready(function() {
+        $('a[href^="#"]').on('click', function(event) {
+            var target = $(this.getAttribute('href'));
+            if (target.length) {
+                event.preventDefault();
+                $('html, body').animate({
+                    scrollTop: target.offset().top
+                }, 1000);
+            }
+        });
+    });
     
     // Back to top button
     $(window).scroll(function () {
@@ -32,4 +44,3 @@
         return false;
     });
 })(jQuery);
-

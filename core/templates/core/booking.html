@@ -1,6 +1,28 @@
 {% extends 'base.html' %}
 
+
 {% block content %}
+  <div class="container">
+    <h1>Book a Session</h1>
+    {% if messages %}
+      {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+      {% endfor %}
+    {% endif %}
+    <form method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit" class="btn btn-primary">Book Session</button>
+    </form>
+    <hr>
+    <h2>Booked Hours</h2>
+    {% for hour in booked_hours %}
+      <p>{{ hour }}</p>
+    {% endfor %}
+  </div>
+{% endblock %}
+
+<!-- {% block content %}
 
 <h1>Book a session</h1>
 
@@ -43,4 +65,4 @@
 
 </form>
 
-{% endblock %}
+{% endblock %} -->
