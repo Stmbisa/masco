@@ -28,7 +28,7 @@ class Membership(models.Model):
         ('private', 'Private'),
         ('monthly', 'Monthly'),
     )
-    user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, related_name='membership')
     type = models.CharField(max_length=10, choices=MEMBERSHIP_TYPES, default='private')
     description = models.TextField()
     price = models.DecimalField(max_digits=8, decimal_places=2)
@@ -53,7 +53,7 @@ class Membership(models.Model):
         return self.has_paid
 
 class Booking(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='booking' )
     membership = models.ForeignKey(Membership, on_delete=models.CASCADE)
     session_date = models.DateField()
     session_start_time = models.TimeField(default=timezone.now)
@@ -148,4 +148,13 @@ class Contact(models.Model):
 
     def __str__(self):
         return self.email
+    
+
+class gallery(models.Model):
+    title=models.CharField(max_length=100)
+    img = models.ImageField(upload_to='gallery')
+    timestamp = models.DateTimeField(auto_now=True, blank=True, null=True)
+
+    def __str__(self):
+        return self.title
     

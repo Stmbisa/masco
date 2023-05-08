@@ -11,7 +11,7 @@
                     <h3 class="text-primary text-capitalize m-0">Gym, Fitness & Welness Center</h3>
                     <h2 class="display-2 m-0 mt-2 mt-md-4 text-white font-weight-bold text-capitalize">Best Gym In Town
                     </h2>
-                    <a href="" class="btn btn-lg btn-outline-light mt-3 mt-md-5 py-md-3 px-md-5">Join Us Now</a>
+                    <a href="{% url 'booking' %}" class="btn btn-lg btn-outline-light mt-3 mt-md-5 py-md-3 px-md-5">Join Us Now</a>
                 </div>
             </div>
             <div class="carousel-item">
@@ -20,7 +20,7 @@
                     <h3 class="text-primary text-capitalize m-0">Gym, Fitness & Welness Center</h3>
                     <h2 class="display-2 m-0 mt-2 mt-md-4 text-white font-weight-bold text-capitalize">Get Body In Shape
                     </h2>
-                    <a href="" class="btn btn-lg btn-outline-light mt-3 mt-md-5 py-md-3 px-md-5">Join Us Now</a>
+                    <a href="{% url 'booking' %}" class="btn btn-lg btn-outline-light mt-3 mt-md-5 py-md-3 px-md-5">Join Us Now</a>
                 </div>
             </div>
         </div>
@@ -47,7 +47,7 @@
                     Bodybuilding is a form of exercise that focuses on building muscle mass and strength through
                     weightlifting and resistance training.
                 </p>
-                <a href="" class="btn btn-lg btn-outline-light mt-4 px-4">Book Session</a>
+                <a href="{% url 'booking' %}" class="btn btn-lg btn-outline-light mt-4 px-4">Book Session</a>
             </div>
         </div>
         <div class="col-md-6 p-0">
@@ -59,7 +59,7 @@
                     Learn how to build lean muscle mass and achieve your fitness goals with our expert tips and training
                     programs.
                 </p>
-                <a href="" class="btn btn-lg btn-outline-light mt-4 px-4">Book Session</a>
+                <a href="{% url 'booking' %}" class="btn btn-lg btn-outline-light mt-4 px-4">Book Session</a>
             </div>
         </div>
         <div class="col-md-6 p-0">
@@ -71,7 +71,7 @@
                     Learn techniques to protect yourself in threatening situations through our self defense program.
                     Gain confidence, strength and knowledge to stay safe.
                 </p>
-                <a href="" class="btn btn-lg btn-outline-light mt-4 px-4">Book Session</a>
+                <a href="{% url 'booking' %}" class="btn btn-lg btn-outline-light mt-4 px-4">Book Session</a>
             </div>
         </div>
         <div class="col-md-6 p-0">
@@ -83,7 +83,7 @@
                     Get rid of depression and anxiety with therapy. Our gym offers therapy sessions to help you improve
                     your mental health and overall well-being.
                 </p>
-                <a href="" class="btn btn-lg btn-outline-light mt-4 px-4">Book Session</a>
+                <a href="{% url 'booking' %}" class="btn btn-lg btn-outline-light mt-4 px-4">Book Session</a>
             </div>
         </div>
     </div>
@@ -106,13 +106,13 @@
                 <div class="col-sm-6">
                     <i class="flaticon-barbell display-2 text-primary"></i>
                     <h4 class="font-weight-bold">Certified GYM Center</h4>
-                    <p>Macon the champion know exactly what to help you with and he is a certified trainer </p>
+                    <p>Masco the champion knows exactly what to help you with and he is a certified trainer </p>
                 </div>
                 <div class="col-sm-6">
                     <i class="flaticon-medal display-2 text-primary"></i>
 
                     <h4 class="font-weight-bold">Award Winning</h4>
-                    <p>So being headed by an award winning champ, with multiple awars, you wont regret </p>
+                    <p>So being headed by an awards winning champ, with multiple awars, you wont regret </p>
                 </div>
             </div>
             <a href="" class="btn btn-lg px-4 btn-outline-primary">Learn More</a>
@@ -263,6 +263,33 @@
     </div>
 </div>
 <!-- GYM Feature End -->
+
+<!-- Gallery Section Begin -->
+<div class="gallery-section">
+    <div class="gallery">
+        <div class="grid-sizer"></div>
+        <div class="gs-item grid-wide set-bg" data-setbg="img/gallery/gallery-1.jpg">
+            <a href="img/gallery/gallery-1.jpg" class="thumb-icon image-popup"><i class="fa fa-picture-o"></i></a>
+        </div>
+        <div class="gs-item set-bg" data-setbg="img/gallery/gallery-2.jpg">
+            <a href="img/gallery/gallery-2.jpg" class="thumb-icon image-popup"><i class="fa fa-picture-o"></i></a>
+        </div>
+        <div class="gs-item set-bg" data-setbg="img/gallery/gallery-3.jpg">
+            <a href="img/gallery/gallery-3.jpg" class="thumb-icon image-popup"><i class="fa fa-picture-o"></i></a>
+        </div>
+        <div class="gs-item set-bg" data-setbg="img/gallery/gallery-4.jpg">
+            <a href="img/gallery/gallery-4.jpg" class="thumb-icon image-popup"><i class="fa fa-picture-o"></i></a>
+        </div>
+        <div class="gs-item set-bg" data-setbg="img/gallery/gallery-5.jpg">
+            <a href="img/gallery/gallery-5.jpg" class="thumb-icon image-popup"><i class="fa fa-picture-o"></i></a>
+        </div>
+        <div class="gs-item grid-wide set-bg" data-setbg="img/gallery/gallery-6.jpg">
+            <a href="img/gallery/gallery-6.jpg" class="thumb-icon image-popup"><i class="fa fa-picture-o"></i></a>
+        </div>
+    </div>
+</div>
+<!-- Gallery Section End -->
+
 
 
 <!-- Subscribe Start -->
@@ -660,6 +687,78 @@
 </div>
 <!-- Class Timetable End -->
 
+<!-- Pricing Section Begin -->
+<section class="pricing-section spad" id="pricing">
+    <div class="container gym-feature py-5" id="classes"></div>
+        <div class="d-flex flex-column text-center mb-5">
+            <h4 class="text-primary font-weight-bold">OUR PLAN</h4>
+            <h4 class="display-4 font-weight-bold">CHOOSE YOUR PRICING PLAN</h4>
+        </div>
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-4 col-md-8">
+                    <div class="ps-item">
+                        <h3>Class drop-in</h3>
+                        <div class="pi-price">
+                            <h2 class="text-primary font-weight-bold">$ 20.0</h2>
+                            <span>SINGLE CLASS</span>
+                        </div>
+                        <ul>
+                            <li>Free riding</li>
+                            <li>Unlimited equipments</li>
+                            <li>Personal trainer</li>
+                            <li>Weight losing classes</li>
+                            <li>Month to mouth</li>
+                            <li>No time restriction</li>
+                        </ul>
+                        <a href="{% url 'booking' %}" class="primary-btn pricing-btn">Enroll now</a>
+                        <a href="{% url 'booking' %}" class="thumb-icon"><i class="fa fa-picture-o"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-8">
+                    <div class="ps-item">
+                        <h3>Monthly unlimited</h3>
+                        <div class="pi-price">
+                            <h2 class="text-primary font-weight-bold" >$ 80.0</h2>
+                            <span>SINGLE CLASS</span>
+                        </div>
+                        <ul>
+                            <li>Free riding</li>
+                            <li>Unlimited equipments</li>
+                            <li>Personal trainer</li>
+                            <li>Weight losing classes</li>
+                            <li>Month to mouth</li>
+                            <li>No time restriction</li>
+                        </ul>
+                        <a href="{% url 'booking' %}" class="primary-btn pricing-btn">Enroll now</a>
+                        <a href="{% url 'booking' %}" class="thumb-icon"><i class="fa fa-picture-o"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-8">
+                    <div class="ps-item">
+                        <h3>Private Monthly unlimited</h3>
+                        <div class="pi-price">
+                            <h2 class="text-primary font-weight-bold">$ 200.0</h2>
+                            <span>SINGLE CLASS</span>
+                        </div>
+                        <ul>
+                            <li>Free riding</li>
+                            <li>Unlimited equipments</li>
+                            <li>Personal trainer</li>
+                            <li>Weight losing classes</li>
+                            <li>Month to mouth</li>
+                            <li>No time restriction</li>
+                        </ul>
+                        <a href="{% url 'booking' %}" class="primary-btn pricing-btn">Enroll now</a>
+                        <a href="{% url 'booking' %}" class="thumb-icon"><i class="fa fa-picture-o"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Pricing Section End -->
+
 
 <!-- BMI Calculation Start -->
 <div class="container-fluid position-relative bmi my-5">
@@ -677,7 +776,7 @@
             <div class="col-md-6 bg-secondary py-5">
                 <div class="py-5 px-3">
                     <h1 class="mb-4 text-white">Calculate your BMI</h1>
-                    <form action="{ url 'home' }">
+                    <form action="{% url 'home' %}" method="post">
                         {% csrf_token %}
                         <div class="form-row">
                             <div class="col form-group">
@@ -729,10 +828,11 @@
                         </div>
                         <div class="form-row">
                             <div class="col">
-                                <input type="button" class="btn btn-lg btn-block btn-dark border-light"
+                                <input type="submit" class="btn btn-lg btn-block btn-dark border-light"
                                     value="Calculate Now">
                             </div>
                         </div>
+                        <p>  Your BMI is {{ bmi_result }}</p>
                     </form>
                 </div>
             </div>

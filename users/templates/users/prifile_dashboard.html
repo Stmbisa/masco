@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<!-- Page Header Start -->
+    <div class="container-fluid page-header mb-5">
+        <div class="d-flex flex-column align-items-center justify-content-center pt-0 pt-lg-5" style="min-height: 400px">
+            <h4 class="display-4 mb-3 mt-0 mt-lg-5 text-white text-uppercase font-weight-bold">Your Profile</h4>
+            <div class="d-inline-flex">
+                <p class="m-0 text-white"><a class="text-white" href="">Profile and Dashboard</a></p>
+                <p class="m-0 text-white px-2">/</p>
+                <p class="m-0 text-white">Profile</p>
+            </div>
+        </div>
+    </div>
+    <!-- Page Header End -->
+
+
+    <!-- Contact Start -->
+    <div class="container pt-5">
+        <div class="container">
+
+    <div class="row">
+    
+    <div class="col-md-4">
+      
+    <h1>Profile Details</h1>
+
+    
+   
+    <ul class="list-group">
+        <li class="list-group-item bg-warning text-dark"><h5>first_name : {{ user.first_name }}</h5></li>
+        <li class="list-group-item bg-warning text-dark"><h5>last name : {{ user.last_name }}</h5></li>
+        <li class="list-group-item bg-warning text-dark"><h5>username : {{ user.username }}</h5></li>
+        <li class="list-group-item bg-warning text-dark"><h5>email : {{ user.email }}</h5></li>
+        <li class="list-group-item bg-warning text-dark"><h5>date you joined : {{ user.date_joined }}</h5></li>
+        <li class="list-group-item bg-warning text-dark"><h5>last time you login : {{ user.last_login }}</h5></li>
+        <li class="list-group-item bg-warning text-dark"><h5>Membership status : {% if user.membership.is_membership_active %} Active {% else %} Inactive {% endif %}</h5></li>
+        <li class="list-group-item bg-warning text-dark"><h5>last training : {% if last_session %} {{ last_session.session_date }} {% else %} You havent booked any session please book <a href="{% url 'booking' %}">here {% endif %}</a></h5></li>
+       
+        
+      
+       
+      </ul>
+    
+    
+    
+    
+    </div>
+    
+    <div class="col-md-8">
+
+
+      <div><Center><h2 class="display-4 mt-3"><b>Attendance Data</b></h2></Center></div>
+
+  
+      
+      <!-- <table class="table">
+        <thead class="thead-warning">
+          <tr>
+          
+            <th scope="col">Date</th>
+            <th scope="col">Login</th>
+            <th scope="col">Logout</th>
+            <th scope="col">Workout</th>
+            <th scope="col">Trained By</th>
+          </tr>
+        </thead>
+        <tbody>
+
+          {% for attend in attendance %}
+          <tr>
+            
+            <td>{{attend.Selectdate}}</td>
+            <td>{{attend.Login}}</td>
+            <td>{{attend.Logout}}</td>
+            <td>{{attend.SelectWorkout}}</td>
+            <td>{{attend.TrainedBy}}</td>
+            
+           
+         
+            
+           
+          </tr>
+          {% endfor %}
+        
+        </tbody>
+      </table> -->
+    
+    
+    </div>
+    
+    
+    
+    
+    
+    </div>
+
+    </div>
+    <!-- Contact End -->
+   
+{% endblock %}

@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from .forms import BMICalculatorForm, TestimonialForm, SubscriptionForm, \
-    MembershipForm, ContactForm, BookingForm
+    MembershipForm, ContactForm, BookingForm, OneDayBookingForm
 from django.shortcuts import render
 from django.utils import timezone
 from .models import BMI, Testimonial, Contact
@@ -28,6 +28,7 @@ def index(request):
                 bmi_instance = bmi_instance.calculate_bmi()
                 bmi_instance.save()
                 return render(request, 'core/index.html', {'bmi_form': BMICalculatorForm(), 'testimonial_form': TestimonialForm(), 'subscription_form': SubscriptionForm(), 'bmi_result': bmi_instance})
+            print(bmi_form.age.errors)
 
         # if 'testimonial_form' in request.POST:
         #     testimonial_form = TestimonialForm(request.POST)
@@ -78,7 +79,76 @@ def contact(request):
     return render(request, 'core/contact.html', context)
 
 
+
 def booking(request):
+    if not request.user.is_authenticated:
+        return redirect('login')
+
+    if request.method == 'POST':
+        form = BookingForm(request.POST)
+        if form.is_valid():
+            booking = form.save(commit=False)
+            booking.user = request.user
+            session_date = booking.session_date
+            session_start_time = booking.session_start_time
+
+            # Check if the user has an active and paid membership
+            if not booking.user.membership.is_active:
+                messages.warning(request, "You don't have an active membership, but you can book one day.")
+                return redirect('one_day_booking')
+
+            if not booking.user.membership.has_paid:
+                messages.warning(request, "Your membership hasn't been paid for.")
+                return redirect('membership')
+
+            # Check if it's not Sunday
+            if session_date.weekday() == 6:
+                messages.warning(request, "The gym is closed on Sundays.")
+                return redirect('booking')
+
+            # Get the booked hours for the session date
+            bookings = Booking.objects.filter(session_date=session_date)
+            booked_hours = bookings.values_list('session_start_time', 'session_end_time')
+
+            # Check if the day is sold out
+            if bookings.count() >= 6:
+                messages.warning(request, "This day is already sold out.")
+                return redirect('booking')
+
+            # Check if the session time is available
+            for booked_hour in booked_hours:
+                if (session_start_time >= booked_hour[0] and session_start_time < booked_hour[1]) or \
+                   (booking.session_end_time > booked_hour[0] and booking.session_end_time <= booked_hour[1]):
+                    messages.warning(request, "This time slot is already booked.")
+                    return redirect('booking')
+
+            booking.save()
+            messages.success(request, "Your session has been booked.")
+            return redirect('booking')
+
+    else:
+        form = BookingForm()
+
+    context = {'form': form}
+    return render(request, 'core/booking.html', context)
+
+
+def one_day_booking(request):
+    if request.method == 'POST':
+        form = OneDayBookingForm(request.POST)
+        if form.is_valid():
+            form.save()
+            # Handle successful form submission
+            messages.info(request,"Thanks for Contacting us we will get back you soon")
+    else:
+        form = OneDayBookingForm()
+
+    context = {'form': form}
+    return render(request, 'core/booking.html', context)
+
+
+
+def bookin(request):
     user = request.user
     membership = Membership.objects.filter(user=user, is_active=True).last()
     booked_hours = Booking.get_booked_hours()
@@ -96,7 +166,7 @@ def booking(request):
         return redirect('booking')
     else:
         if request.method == 'POST':
-            form = BookingForm(request.POST)
+            form = OneDayBookingForm(request.POST)
             if form.is_valid():
                 session_date = form.cleaned_data['session_date']
                 session_start_time = form.cleaned_data['session_start_time']
@@ -114,7 +184,7 @@ def booking(request):
         form.fields['session_end_time'].widget.attrs.update({'class': 'form-control form-control-lg bg-dark text-white timepicker', 'placeholder': 'Select an end time'})
 
         context = {'form': form, 'booked_hours': booked_hours}
-        return render(request, 'booking.html', context)
+        return render(request, 'core/booking.html', context)
 
 
 def admin_dashboard(request):

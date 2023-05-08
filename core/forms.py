@@ -112,4 +112,29 @@ class BookingForm(forms.ModelForm):
         }
 
 
+class OneDayBookingForm(forms.ModelForm):
+    session_start_time = forms.TimeField(
+        widget=forms.TimeInput(
+            attrs={'class': 'form-control form-control-lg bg-dark text-white timepicker', 'placeholder': 'Start Time'},
+            format='%I:%M %p',
+            # attrs={'class': 'form-control timepicker'}
+        ),
+    )
+    session_end_time = forms.TimeField(
+        widget=forms.TimeInput(
+            attrs={'class': 'form-control form-control-lg bg-dark text-white timepicker', 'placeholder': 'End Time'},
+            format='%I:%M %p',
+            # attrs={'class': 'form-control timepicker'}
+        ),
+    )
+
+    class Meta:
+        model = Booking
+        fields = ['session_date', 'session_start_time', 'session_end_time', 'session_type']
+        widgets = {
+            'membership': forms.Select(attrs={'class': 'form-control form-control-lg bg-dark text-white'}),
+            'session_date': forms.DateInput(attrs={'class': 'form-control form-control-lg bg-dark text-white datepicker', 'placeholder': 'Select date'}),
+            'session_type': forms.Select(attrs={'class': 'form-control form-control-lg bg-dark text-white'}),
+        }
+
 

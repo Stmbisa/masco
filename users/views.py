@@ -4,6 +4,8 @@ from django.contrib.auth import get_user_model
 from django.contrib import messages, auth
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
+from core.models import Booking
+from django.core.exceptions import ObjectDoesNotExist
 
 
 User = get_user_model()
@@ -176,3 +178,23 @@ def resetPassword(request):
 
 def book(request):
     return render(request, 'book.html')
+
+
+def prifile_dashboard(request):
+    if not request.user.is_authenticated:
+        messages.warning(request,'You are not logged in')
+        return redirect('login')
+    user = request.user
+    try:
+        # Get the last session for the user
+        last_session = Booking.objects.filter(user=user).latest('session_date')
+        sessions = Booking.objects.filter(user=user)
+    except ObjectDoesNotExist:
+        last_session = None
+        sessions = None
+    context = {
+        'user': user,
+        'last_session': last_session,
+        'sessions': sessions,
+    }
+    return render(request, 'users/prifile_dashboard.html', context)
