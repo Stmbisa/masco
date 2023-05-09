@@ -10,12 +10,13 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
+from django.core.management.utils import get_random_secret_key
 from pathlib import Path
-import os 
 import datetime
 from django.utils import timezone
-
-
+import os
+import sys
+import dj_database_url
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -23,15 +24,18 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 # Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
+# See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-i7$sx333w9!uym_pa9xo$8rk1^6$s1m0v@k8b!rywg5_y*a66y'
+SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", get_random_secret_key())
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# DEBUG = False
+DEBUG = os.getenv("DEBUG", "False") == "True"
 
-ALLOWED_HOSTS = []
+# ALLOWED_HOSTS = []
+# ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS", "127.0.0.1,localhost,www.cajetan.global,cajetan.global").split(",")
+ALLOWED_HOSTS = ['mascodlionheart.com', 'www.mascodlionheart.com']
 
 
 # Application definition
@@ -83,12 +87,22 @@ WSGI_APPLICATION = 'mascodlionheart.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+DEVELOPMENT_MODE = os.getenv("DEVELOPMENT_MODE", "False") == "True"
+
+if DEVELOPMENT_MODE is True:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
+        }
     }
-}
+elif len(sys.argv) > 0 and sys.argv[1] != 'collectstatic':
+    if os.getenv("DATABASE_URL", None) is None:
+        raise Exception("DATABASE_URL environment variable not defined")
+    DATABASES = {
+        "default": dj_database_url.parse(os.environ.get("DATABASE_URL")),
+    }
+
 
 
 # Password validation
@@ -109,6 +123,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+SITE_ID = 1
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
@@ -130,8 +145,8 @@ AUTH_USER_MODEL = 'users.User'
 
 # STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR /'static'
-STATICFILES_DIRS = ['mascodlionheart/static',]
-STATIC_URL = '/static/'
+STATICFILES_DIRS = (os.path.join(BASE_DIR/'mascodlionheart/static'),)
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # STATIC_ROOT = '/static/'
 # STATICFILES_DIRS = (os.path.join(BASE_DIR/'static'),)
 
@@ -147,9 +162,11 @@ MESSAGE_TAGS = {
 # SMTP configuration
 EMAIL_HOST = 'smtp.gmail.com'
 email_port = 587
-EMAIL_HOST_USER = 'newmbis@gmail.com'
-EMAIL_HOST_PASSWORD = 'cezfnzmexfvoxjzh'
+EMAIL_HOST_USER = 'mascodlionheart@gmail.com'
+EMAIL_HOST_PASSWORD = 'mixlexmix1'
 EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+
 
 
 
@@ -182,4 +199,33 @@ CELERY_BEAT_SCHEDULE = {
 # Celery worker and beat in your PythonAnywhere console command to start the task:
 # celery -A mascodlionheart worker -l info
 # celery -A mascodlionheart beat -l info
+
+
+
+# HTTPS settings
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+SECURE_SSL_REDIRECT = True
+
+EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
+EMAIL_FILE_PATH = 'cajetanglobalvisa\messages'
+
+
+# HSTS settings
+SECURE_HSTS_SECONDS = 31536000 # 1 year
+SECURE_HSTS_PRELOAD = True
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+
+from django.contrib.messages import constants as messages
+MESSAGE_TAGS={
+    messages.ERROR: 'danger',
+}
+
+import mimetypes
+mimetypes.add_type("text/css", ".css", True)
+
+WHITENOISE_MIMETYPES = {
+    '.xsl': 'application/xml'
+}
+
 

@@ -189,3 +189,5 @@ def bookin(request):
 
 def admin_dashboard(request):
     return render(request, 'core/admin_dashboard.html')
+
+
