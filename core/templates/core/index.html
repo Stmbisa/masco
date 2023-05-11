@@ -11,7 +11,7 @@
                     <h3 class="text-primary text-capitalize m-0">Gym, Fitness & Welness Center</h3>
                     <h2 class="display-2 m-0 mt-2 mt-md-4 text-white font-weight-bold text-capitalize">Best Gym In Town
                     </h2>
-                    <a href="{% url 'booking' %}" class="btn btn-lg btn-outline-light mt-3 mt-md-5 py-md-3 px-md-5">Join Us Now</a>
+                    <a href="{% url 'membership' %}" class="btn btn-lg btn-outline-light mt-3 mt-md-5 py-md-3 px-md-5">Join Us Now</a>
                 </div>
             </div>
             <div class="carousel-item">
@@ -20,7 +20,7 @@
                     <h3 class="text-primary text-capitalize m-0">Gym, Fitness & Welness Center</h3>
                     <h2 class="display-2 m-0 mt-2 mt-md-4 text-white font-weight-bold text-capitalize">Get Body In Shape
                     </h2>
-                    <a href="{% url 'booking' %}" class="btn btn-lg btn-outline-light mt-3 mt-md-5 py-md-3 px-md-5">Join Us Now</a>
+                    <a href="{% url 'membership' %}" class="btn btn-lg btn-outline-light mt-3 mt-md-5 py-md-3 px-md-5">Join Us Now</a>
                 </div>
             </div>
         </div>
@@ -265,46 +265,35 @@
 <!-- GYM Feature End -->
 
 <!-- Gallery Section Begin -->
+{% if galleries %}
 <div class="gallery-section">
+    {% for gallery in galleries %}
     <div class="gallery">
         <div class="grid-sizer"></div>
-        <div class="gs-item grid-wide set-bg" data-setbg="img/gallery/gallery-1.jpg">
-            <a href="img/gallery/gallery-1.jpg" class="thumb-icon image-popup"><i class="fa fa-picture-o"></i></a>
-        </div>
-        <div class="gs-item set-bg" data-setbg="img/gallery/gallery-2.jpg">
-            <a href="img/gallery/gallery-2.jpg" class="thumb-icon image-popup"><i class="fa fa-picture-o"></i></a>
-        </div>
-        <div class="gs-item set-bg" data-setbg="img/gallery/gallery-3.jpg">
-            <a href="img/gallery/gallery-3.jpg" class="thumb-icon image-popup"><i class="fa fa-picture-o"></i></a>
-        </div>
-        <div class="gs-item set-bg" data-setbg="img/gallery/gallery-4.jpg">
-            <a href="img/gallery/gallery-4.jpg" class="thumb-icon image-popup"><i class="fa fa-picture-o"></i></a>
-        </div>
-        <div class="gs-item set-bg" data-setbg="img/gallery/gallery-5.jpg">
-            <a href="img/gallery/gallery-5.jpg" class="thumb-icon image-popup"><i class="fa fa-picture-o"></i></a>
-        </div>
-        <div class="gs-item grid-wide set-bg" data-setbg="img/gallery/gallery-6.jpg">
-            <a href="img/gallery/gallery-6.jpg" class="thumb-icon image-popup"><i class="fa fa-picture-o"></i></a>
+        <div class="gs-item grid-wide set-bg" data-setbg="{{ gallery.get_image }}">
+            <a href="{{ gallery.get_image }}" class="thumb-icon image-popup"><i class="fa fa-picture-o"></i></a>
         </div>
     </div>
+    {% endfor %}
 </div>
+{% endif %}
 <!-- Gallery Section End -->
 
 
 
 <!-- Subscribe Start -->
-<div class="subscribe container-fluid my-5 py-5 text-center">
+<!-- <div class="subscribe container-fluid my-5 py-5 text-center">
     <h4 class="display-4 text-white font-weight-bold mt-5 mb-3">Subscribe Our Newsletter</h4>
     <p class="text-white mb-4">Subscribe and get Our latest article in your inbox</p>
-    <form class="form-inline justify-content-center mb-5">
+    <form class="form-inline justify-content-center mb-5" action="{% url 'home' %}">
         <div class="input-group">
-            <input type="text" class="form-control-lg" placeholder="Your Email">
+            <input type="text" class="form-control-lg" placeholder="Your Email" name="email">
             <div class="input-group-append">
                 <button class="btn btn-primary" type="submit">Subscribe</button>
             </div>
         </div>
     </form>
-</div>
+</div> -->
 <!-- Subscribe End -->
 
 
@@ -761,15 +750,15 @@
 
 
 <!-- BMI Calculation Start -->
-<div class="container-fluid position-relative bmi my-5">
+<!-- <div class="container-fluid position-relative bmi my-5">
     <div class="container">
         <div class="row px-3 align-items-center">
             <div class="col-md-6">
                 <div class="pr-md-3 d-none d-md-block">
                     <h4 class="text-primary">Body Mass Index </h4>
                     <h4 class="display-4 text-white font-weight-bold mb-4">Whate is BMI?</h4>
-                    <p class="m-0 text-white">Vero elitr lorem magna justo magna justo at justo est ipsum sed clita
-                        lorem dolor ipsum sed. Lorem sea lorem vero. Sanct dolor clita clita rebum kasd magna erat diam
+                    <p class="m-0 text-white">Body mass index (BMI) is a measure of body fat based on height and weight that applies to adult men and women.
+                        It is a value derived from the mass and height of a person. The BMI is defined as the body mass divided by the square of the body height, and is expressed in units of kg/m²,
                     </p>
                 </div>
             </div>
@@ -838,7 +827,7 @@
             </div>
         </div>
     </div>
-</div>
+</div> -->
 <!-- BMI Calculation End -->
 
 

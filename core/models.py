@@ -2,6 +2,8 @@ from django.db import models
 from django.contrib.auth import get_user_model
 from datetime import datetime, time, timedelta
 from django.utils import timezone
+from django.contrib.auth.models import User
+
 
 
 
@@ -28,11 +30,11 @@ class Membership(models.Model):
         ('private', 'Private'),
         ('monthly', 'Monthly'),
     )
-    user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, related_name='membership')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='memberships')
     type = models.CharField(max_length=10, choices=MEMBERSHIP_TYPES, default='private')
     description = models.TextField()
-    price = models.DecimalField(max_digits=8, decimal_places=2)
-    duration = models.IntegerField(default=30,)
+    price = models.DecimalField(max_digits=8, decimal_places=2, blank=True, null=True) 
+    duration = models.IntegerField(default=30, blank=True, null=True)
     has_paid = models.BooleanField(default=False)
     is_active = models.BooleanField(default=False)
 
@@ -150,11 +152,18 @@ class Contact(models.Model):
         return self.email
     
 
-class gallery(models.Model):
+class Gallery(models.Model):
     title=models.CharField(max_length=100)
     img = models.ImageField(upload_to='gallery')
     timestamp = models.DateTimeField(auto_now=True, blank=True, null=True)
 
     def __str__(self):
         return self.title
+    
+    def get_image(self):
+        if self.img and hasattr(self.img, 'url'):
+            return self.img.url
+
+
+
     

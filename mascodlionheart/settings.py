@@ -16,7 +16,7 @@ import datetime
 from django.utils import timezone
 import os
 import sys
-# import dj_database_url
+import dj_database_url
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -35,7 +35,7 @@ DEBUG = os.getenv("DEBUG", "False") == "True"
 
 # ALLOWED_HOSTS = []
 # ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS", "127.0.0.1,localhost,www.cajetan.global,cajetan.global").split(",")
-ALLOWED_HOSTS = ['mascodlionheart.com', 'www.mascodlionheart.com']
+ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS", "127.0.0.1,localhost").split(",")
 
 
 # Application definition
@@ -49,7 +49,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'users',
     'core',
-    'bootstrap_datepicker_plus',
+    'tempus_dominus',
 ]
 
 MIDDLEWARE = [
@@ -228,5 +228,4 @@ mimetypes.add_type("text/css", ".css", True)
 WHITENOISE_MIMETYPES = {
     '.xsl': 'application/xml'
 }
-
 

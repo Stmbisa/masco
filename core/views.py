@@ -8,51 +8,54 @@ from .models import BMI, Testimonial, Contact
 from django.contrib import messages
 from django.shortcuts import render, redirect
 from datetime import datetime
-from .models import Membership, Booking
+from .models import Membership, Booking, Gallery
 
 
 
 def index(request):
+    galleries = Gallery.objects.all()
     bmi_form = BMICalculatorForm()
-    testimonial_form = TestimonialForm()
     subscription_form = SubscriptionForm()
 
     if request.method == 'POST':
-        if 'bmi_form' in request.POST:
+        if 'bmi_submit' in request.POST:
             bmi_form = BMICalculatorForm(request.POST)
             if bmi_form.is_valid():
                 name = bmi_form.cleaned_data['name']
                 age = bmi_form.cleaned_data['age']
                 height = bmi_form.cleaned_data['height']
-                bmi_instance = BMI.objects.create_user(name=name, age=age,height = height)
+                bmi_instance = BMI.objects.create(name=name, age=age,height = height)
                 bmi_instance = bmi_instance.calculate_bmi()
                 bmi_instance.save()
-                return render(request, 'core/index.html', {'bmi_form': BMICalculatorForm(), 'testimonial_form': TestimonialForm(), 'subscription_form': SubscriptionForm(), 'bmi_result': bmi_instance})
-            print(bmi_form.age.errors)
+                return render(request, 'core/index.html', {'galleries': galleries, 'bmi_form': BMICalculatorForm(),
+                                                           'subscription_form': SubscriptionForm(), 'bmi_result': bmi_instance})
 
-        # if 'testimonial_form' in request.POST:
-        #     testimonial_form = TestimonialForm(request.POST)
-        #     if testimonial_form.is_valid():
-        #         testimonial_instance = testimonial_form.save(commit=False)
-        #         testimonial_instance.user = request.user
-        #         testimonial_instance.save()
-        #         return render(request, 'core/index.html', {'bmi_form': BMICalculatorForm(), 'testimonial_form': TestimonialForm(), 'subscription_form': SubscriptionForm()})
-
-        if 'subscription_form' in request.POST:
+        if 'subscription_submit' in request.POST:
             subscription_form = SubscriptionForm(request.POST)
             if subscription_form.is_valid():
                 email_instance = subscription_form.save()
-                return render(request, 'core/index.html', {'bmi_form': BMICalculatorForm(), 'testimonial_form': TestimonialForm(), 'subscription_form': SubscriptionForm()})
+                return render(request, 'core/index.html', {'galleries': galleries, 'bmi_form': BMICalculatorForm(),
+                                                           'subscription_form': SubscriptionForm()})
 
-    return render(request, 'core/index.html', {'bmi_form': bmi_form, 'testimonial_form': testimonial_form, 'subscription_form': subscription_form})
+    return render(request, 'core/index.html', {'galleries': galleries, 'bmi_form': bmi_form,
+                                               'subscription_form': subscription_form})
+
+
 
 
 def membership_view(request):
-    form = MembershipForm(request.POST or None)
-    if form.is_valid():
-        form.save()
-        return redirect('membership_success')
-    return render(request, 'membership_form.html', {'form': form})
+    form = MembershipForm(request=request)
+    if request.method == 'POST':
+        form = MembershipForm(request.POST, request=request)  # Pass the POST data
+        if form.is_valid():
+            form.save()
+            messages.info(request, "Thank you for becoming a member. Your membership will be approved soon.")
+            return redirect('prifile_dashboard')
+        else:
+            messages.warning(request, "Sorry, something went wrong.")
+            print(form.errors)  # Print form errors for debugging
+    return render(request, 'core/membership.html', {'form': form})
+
 
 
 def send_expiry_reminder_emails(request):
@@ -87,40 +90,26 @@ def booking(request):
     if request.method == 'POST':
         form = BookingForm(request.POST)
         if form.is_valid():
-            booking = form.save(commit=False)
+            booking = form.save(commit=False, user=request.user)
             booking.user = request.user
-            session_date = booking.session_date
-            session_start_time = booking.session_start_time
 
             # Check if the user has an active and paid membership
-            if not booking.user.membership.is_active:
+            booking = request.user.booking.first()
+            if booking is None:
+                messages.warning(request, "You don't have a membership. Please sign up for one.")
+                return redirect('membership')
+
+            membership = booking.membership
+
+            if not membership.is_active:
                 messages.warning(request, "You don't have an active membership, but you can book one day.")
                 return redirect('one_day_booking')
 
-            if not booking.user.membership.has_paid:
+            if not membership.has_paid:
                 messages.warning(request, "Your membership hasn't been paid for.")
                 return redirect('membership')
 
-            # Check if it's not Sunday
-            if session_date.weekday() == 6:
-                messages.warning(request, "The gym is closed on Sundays.")
-                return redirect('booking')
-
-            # Get the booked hours for the session date
-            bookings = Booking.objects.filter(session_date=session_date)
-            booked_hours = bookings.values_list('session_start_time', 'session_end_time')
-
-            # Check if the day is sold out
-            if bookings.count() >= 6:
-                messages.warning(request, "This day is already sold out.")
-                return redirect('booking')
-
-            # Check if the session time is available
-            for booked_hour in booked_hours:
-                if (session_start_time >= booked_hour[0] and session_start_time < booked_hour[1]) or \
-                   (booking.session_end_time > booked_hour[0] and booking.session_end_time <= booked_hour[1]):
-                    messages.warning(request, "This time slot is already booked.")
-                    return redirect('booking')
+            # Rest of the validation logic...
 
             booking.save()
             messages.success(request, "Your session has been booked.")
@@ -131,6 +120,11 @@ def booking(request):
 
     context = {'form': form}
     return render(request, 'core/booking.html', context)
+
+
+
+
+
 
 
 def one_day_booking(request):

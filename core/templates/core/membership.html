@@ -2,7 +2,7 @@
 {% block content %}
 <div class="container-fluid page-header mb-5">
   <div class="d-flex flex-column align-items-center justify-content-center pt-0 pt-lg-5" style="min-height: 400px">
-    <h4 class="display-4 mb-3 mt-0 mt-lg-5 text-white text-uppercase font-weight-bold">Book Session</h4>
+    <h4 class="display-4 mb-3 mt-0 mt-lg-5 text-white text-uppercase font-weight-bold">Become a member today</h4>
   </div>
 </div>
 
@@ -28,36 +28,23 @@
       <article class="card-body">
           <section class="section-conten padding-y" style="min-height:84vh">
     <div class="container">
-      <h1>Book a Session</h1>
+      <h1>Become a member </h1>
+      <p> wanna book only a single day? <a href="{% url 'one_day_booking' %}">Book here</a> </p>
       {% if messages %}
       {% for message in messages %}
       <div class="alert alert-{{ message.tags }}">{{ message }}</div>
       {% endfor %}
       {% endif %}
-      <form method="post" actiona= "{% url 'booking' %}">
+      <form method="post" action="{% url 'membership' %}">
         {% csrf_token %}
         {{ form.as_p }}
-        <button type="submit" class="btn btn-primary">Book Session</button>
+        <button type="submit" class="btn btn-primary">Enroll Me</button>
       </form>
       <hr>
-      <h2>Booked Hours</h2>
-      {% for hour in booked_hours %}
-      <p>{{ hour }}</p>
-      {% endfor %}
     </div>
    
 
-    {% if not user.is_membership_active %}
-    <div class="alert alert-warning mt-3" role="alert">
-      Your membership is not active. Please renew it to book a session.
-    </div>
-    {% endif %}
-
-    {% if booking.is_sunday_booking %}
-    <div class="alert alert-warning mt-3" role="alert">
-      Sunday bookings are not allowed. Please choose another day.
-    </div>
-    {% endif %}
+   
   </div>
 </div>
 </section>

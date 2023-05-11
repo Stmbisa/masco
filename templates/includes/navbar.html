@@ -1,35 +1,46 @@
 {% load static %}
 
+<nav class="navbar navbar-expand-lg navbar-light bg-light" data-bs-spy="scroll" data-bs-target="#navbar">
+  <div class="container-fluid">
+    <!-- Your navbar content here -->
+  </div>
+</nav>
+
+
 <!-- Navbar Start -->
     <div class="container-fluid p-0 nav-bar" id="navbar">
-        <nav class="navbar navbar-expand-lg bg-none navbar-dark py-3">
-            <a class="navbar-brand" href="#">
-                <img src="{% static 'img/logo.png' %}" width="230"  class="d-inline-block align-top" alt="Gymnast Logo">
-              </a>
-            <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
-                <div class="navbar-nav ml-auto p-4 bg-secondary">
-                    <a href="{% url 'home' %}" class="nav-item nav-link active">Home</a>
-                    <a href="#about" class="nav-item nav-link">About Us</a>
-                    <a href="#feature" class="nav-item nav-link">Our Features</a>
-                    <a href="#classes" class="nav-item nav-link">Classes</a>
-                    <a href="#pricing" class="nav-item nav-link">pricing</a>
-                    {% if user.is_authenticated %}
-                    <div class="nav-item dropdown">
-                        <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">{{ user.username }}</a>
-                        <div class="dropdown-menu text-capitalize">
-                            <a href="blog.html" class="dropdown-item">View Profile</a>
-                            <a href="single.html" class="dropdown-item">workouts</a>
-                            <a href="single.html" class="dropdown-item">Tracker</a>
-                            <a href="{% url 'logout' %}" class="dropdown-item">log out</a>
+        <nav class="navbar navbar-expand-lg bg-none navbar-dark py-3" data-bs-spy="scroll" data-bs-target="#navbar">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">
+                    <img src="{% static 'img/logo.png' %}" width="230"  class="d-inline-block align-top" alt="Gymnast Logo">
+                </a>
+                <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
+                    <div class="navbar-nav ml-auto p-4 bg-secondary">
+                        <a class="nav-link" data-bs-toggle="collapse" href="{% url 'home' %}" role="button" aria-expanded="false" aria-controls="home" class="nav-item nav-link active">Home</a>
+                        {% comment %} <a class="nav-link" data-bs-toggle="collapse" href="#classes" role="button" aria-expanded="false" aria-controls="classes">Classes</a> {% endcomment %}
+                        <a data-bs-toggle="collapse" href="#about" role="button" aria-expanded="false" aria-controls="about" class="nav-item nav-link ">About Us</a>
+                        <a data-bs-toggle="collapse" href="#feature" role="button" aria-expanded="false" aria-controls="feature" class="nav-item nav-link ">Our Features</a>
+                        <a data-bs-toggle="collapse" href="#classes" role="button" aria-expanded="false" aria-controls="classes" class="nav-item nav-link ">Classes</a>
+                        <a data-bs-toggle="collapse" href="#pricing" role="button" aria-expanded="false" aria-controls="pricing" class="nav-item nav-link ">pricing</a>
+                        {% if user.is_authenticated %}
+                        <div class="nav-item dropdown">
+                            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">{{ user.username }}</a>
+                            <div class="dropdown-menu text-capitalize">
+                                <a href="{% url 'prifile_dashboard' %}" class="dropdown-item">View Profile</a>
+                                <a href="{% url 'prifile_dashboard' %}" class="dropdown-item">workouts</a>
+                                <a href="{% url 'prifile_dashboard' %}" class="dropdown-item">Tracker</a>
+                                <a href="{% url 'logout' %}" class="dropdown-item">log out</a>
+                            </div>
                         </div>
+                        {% else %}
+                        <a href="{% url 'login' %}" class="nav-item nav-link">Sign in</a>
+                        <a href="{% url 'membership' %}" class="nav-item nav-link"> Be Member</a>
+                        {% endif %}
+                        <a href="{% url 'contact' %}" class="nav-item nav-link">Contact</a>
                     </div>
-                    {% else %}
-                    <a href="/sign in" class="nav-item nav-link">Sign in</a>
-                    {% endif %}
-                    <a href="{% url 'contact' %}" class="nav-item nav-link">Contact</a>
                 </div>
             </div>
         </nav>
