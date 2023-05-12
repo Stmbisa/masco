@@ -9,6 +9,7 @@ from django.contrib import messages
 from django.shortcuts import render, redirect
 from datetime import datetime
 from .models import Membership, Booking, Gallery
+from django.contrib.auth.decorators import login_required
 
 
 
@@ -42,8 +43,11 @@ def index(request):
 
 
 
-
+# @login_required
 def membership_view(request):
+    if not request.user.is_authenticated:
+        messages.warning(request, "Somehow, this is for members😉😊, fist login")
+        return redirect('login')
     form = MembershipForm(request=request)
     if request.method == 'POST':
         form = MembershipForm(request.POST, request=request)  # Pass the POST data
@@ -126,7 +130,7 @@ def booking(request):
 
 
 
-
+@login_required
 def one_day_booking(request):
     if request.method == 'POST':
         form = OneDayBookingForm(request.POST)
