@@ -20,7 +20,7 @@
     
     // Smooth scrolling to sections on the same page
     $(document).ready(function() {
-        $('a[href^="#"]').on('click', function(event) {
+        $('.nav-link[href^="#"]').on('click', function(event) {
             var target = $(this.getAttribute('href'));
             if (target.length) {
                 event.preventDefault();

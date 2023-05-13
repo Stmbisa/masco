@@ -265,18 +265,30 @@
 <!-- GYM Feature End -->
 
 <!-- Gallery Section Begin -->
-{% if galleries %}
 <div class="gallery-section">
-    {% for gallery in galleries %}
     <div class="gallery">
         <div class="grid-sizer"></div>
-        <div class="gs-item grid-wide set-bg" data-setbg="{{ gallery.get_image }}">
-            <a href="{{ gallery.get_image }}" class="thumb-icon image-popup"><i class="fa fa-picture-o"></i></a>
+        <div class="gs-item grid-wide set-bg" data-setbg="{% static 'img/masco1.jpeg' %}">
+            <a href="{% static 'img/masco1.jpeg' %}" class="thumb-icon image-popup"><i class="fa fa-picture-o"></i></a>
+        </div>
+        <div class="gs-item set-bg" data-setbg="{% static 'img/masco2.jpeg' %}">
+            <a href="{% static 'img/masco2.jpeg' %}" class="thumb-icon image-popup"><i class="fa fa-picture-o"></i></a>
+        </div>
+        <div class="gs-item set-bg" data-setbg="{% static 'img/masco3.jpeg' %}">
+            <a href="{% static 'img/masco3.jpeg' %}" class="thumb-icon image-popup"><i class="fa fa-picture-o"></i></a>
+        </div>
+        <div class="gs-item set-bg" data-setbg="{% static 'img/masco4.jpeg' %}">
+            <a href="{% static 'img/masco4.jpeg' %}" class="thumb-icon image-popup"><i class="fa fa-picture-o"></i></a>
+        </div>
+        <div class="gs-item set-bg" data-setbg="{% static 'img/masco5.jpeg' %}">
+            <a href="{% static 'img/masco5.jpeg' %}" class="thumb-icon image-popup"><i class="fa fa-picture-o"></i></a>
+        </div>
+        <div class="gs-item grid-wide set-bg" data-setbg="{% static 'img/masco6.jpeg' %}">
+            <a href="{% static 'img/masco6.jpeg' %}" class="thumb-icon image-popup"><i class="fa fa-picture-o"></i></a>
         </div>
     </div>
-    {% endfor %}
 </div>
-{% endif %}
+<!-- Gallery Section End -->
 <!-- Gallery Section End -->
 
 
@@ -684,13 +696,16 @@
             <h4 class="display-4 font-weight-bold">CHOOSE YOUR PRICING PLAN</h4>
         </div>
         <div class="d-flex flex-column text-center mb-5">
+            <h4 class="display-4 font-weight-lighter">Our Daily Training plain at $7 you can book a day session <a href="{% url 'one_day_booking' %}">here</a>  </h4>
+        </div>
+        <div class="d-flex flex-column text-center mb-5">
             <h4 class="display-4 font-weight-lighter">Our Daily Training with Sauna and steam bath at $7 you can book a day session <a href="{% url 'one_day_booking' %}">here</a>  </h4>
         </div>
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-lg-4 col-md-8">
                     <div class="ps-item">
-                        <h3>Class drop-in</h3>
+                        <h3>Silver Package</h3>
                         <div class="pi-price">
                             <h2 class="text-primary font-weight-bold">$ 70.0</h2>
                             <span>30 DAYS</span>
